@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BookWise</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to BookWise 📚</h1>
+        <a href="{{ url_for('main.login') }}">Login</a> |
+        <a href="{{ url_for('main.register') }}">Register</a>
+    </div>
+</body>
+</html>
+######step 10: register.html########
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register | BookWise</title>
+</head>
+<body>
+    <h2>Register</h2>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        {{ form.username.label }} {{ form.username() }}<br>
+        {{ form.password.label }} {{ form.password() }}<br>
+        {{ form.submit() }}
+    </form>
+    <a href="{{ url_for('main.login') }}">Already have an account?</a>
+</body>
+</html>
+#####Step 11 :login.html#####
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login | BookWise</title>
+</head>
+<body>
+    <h2>Login</h2>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        {{ form.username.label }} {{ form.username() }}<br>
+        {{ form.password.label }} {{ form.password() }}<br>
+        {{ form.submit() }}
+    </form>
+    <a href="{{ url_for('main.register') }}">Create account</a>
+</body>
+</html>
+##### step 12:Dashboard#####
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard | BookWise</title>
+</head>
+<body>
+    <h2>Welcome, {{ current_user.username }}</h2>
+
+    <h3>Submit a Review</h3>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        {{ form.book_title.label }} {{ form.book_title() }}<br>
+        {{ form.review_text.label }} {{ form.review_text() }}<br>
+        {{ form.submit() }}
+    </form>
+
+    <h3>Your Reviews</h3>
+    <ul>
+        {% for review in reviews %}
+            <li><strong>{{ review.book_title }}</strong>: {{ review.review_text }}</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Get Recommendations</h3>
+    <form action="{{ url_for('main.recommend') }}" method="GET">
+        <input type="text" name="book" placeholder="Enter book title">
+        <input type="submit" value="Recommend">
+    </form>
+
+    <a href="{{ url_for('main.logout') }}">Logout</a>
+</body>
+</html>
+#######  Step 13: app/templates/recommendation.html #######
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Recommendations | BookWise</title>
+</head>
+<body>
+    <h2>Recommendations based on "{{ searched }}"</h2>
+    {% if recommendations %}
+        <ul>
+            {% for rec in recommendations %}
+                <li>{{ rec }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No recommendations found or book not in database.</p>
+    {% endif %}
+    <a href="{{ url_for('main.dashboard') }}">Back to Dashboard</a>
+</body>
+</html>
